@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-HOSTS_FILE = "/Users/rick/.nb-hosts.json"
+HOSTS_FILE = "#{ENV["HOME"]}/.nb-hosts.json"
 
 def matches?(patterns, line)
   patterns.each do |pattern|
