@@ -1,5 +1,6 @@
 {
     "workbench.colorTheme": "Monokai Dimmed",
+    "pasteAndIndent.selectAfter": true,
     "git.autorefresh": false,
     "git.autofetch": false,
     "workbench.editor.closeOnFileDelete": false,
@@ -10,9 +11,19 @@
     "editor.renderWhitespace": "all",
     "editor.autoIndent": false,
     "files.insertFinalNewline": true,
-    "window.zoomLevel": 0,
+    "window.zoomLevel": 1,
     "typescript.check.npmIsInstalled": false,
     "workbench.editor.enablePreview": false,
     "workbench.editor.enablePreviewFromQuickOpen": false,
-    "gitlens.keymap": "alternate"
+    "gitlens.keymap": "alternate",
+    "gitlens.advanced.messages": {
+        "suppressCommitHasNoPreviousCommitWarning": false,
+        "suppressCommitNotFoundWarning": false,
+        "suppressFileNotUnderSourceControlWarning": false,
+        "suppressGitVersionWarning": false,
+        "suppressLineUncommittedWarning": false,
+        "suppressNoRepositoryWarning": false,
+        "suppressResultsExplorerNotice": false,
+        "suppressShowKeyBindingsNotice": true
+    }
 }
