@@ -1,0 +1,1 @@
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /etc:/etc -e REMOVE_VOLUMES=1 -e GRACE_PERIOD_SECOND=86400 spotify/docker-gc
