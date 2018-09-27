@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# create an upload for a budget snapshot into a git repo
+
+USAGE="Usage:  $0 <house|rick> <yyyymmdd>"
+
+WHICH=$1
+DATE=$2
+
+if [[ -z $WHICH ]]; then
+  echo "category not set"
+  echo $USAGE
+  exit 1
+else
+  if [[ $WHICH == "house" ]]; then
+    REPO="5001-indiana"
+  elif [[ $WHICH == "rick" ]]; then
+    REPO="rick"
+  else
+    echo "invalid category: $WHICH"
+    echo $USAGE
+    exit 1
+  fi	  
+fi
+
+if [[ -z $DATE ]]; then
+  echo "date not set"
+  echo $USAGE
+  exit 1
+fi
+
+YEAR=`date +%Y`
+echo "$WHICH: Using repo $REPO, year $YEAR, date $DATE"
+
+set -x
+
+cd /Users/rick/Downloads
+rm -f /Users/rick/git/${REPO}/budgeting/${YEAR}/${WHICH}-budgeting.moneywell-${DATE}.zip
+zip -r -9 /Users/rick/git/${REPO}/budgeting/${YEAR}/${WHICH}-budgeting.moneywell-${DATE}.zip   ${WHICH}-budgeting.moneywell
+cd /Users/rick/git/${REPO}/
+git add budgeting
+git commit -m "Updating budget snapshot for ${DATE}"
+git push
+
