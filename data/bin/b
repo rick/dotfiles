@@ -29,12 +29,13 @@ if [[ -z $DATE ]]; then
   exit 1
 fi
 
-YEAR=`date +%Y`
+YEAR=${DATE:0:4}
 echo "$WHICH: Using repo $REPO, year $YEAR, date $DATE"
 
 set -x
 
 cd /Users/rick/Downloads
+mkdir -p /Users/rick/git/${REPO}/budgeting/${YEAR}/
 rm -f /Users/rick/git/${REPO}/budgeting/${YEAR}/${WHICH}-budgeting.moneywell-${DATE}.zip
 zip -r -9 /Users/rick/git/${REPO}/budgeting/${YEAR}/${WHICH}-budgeting.moneywell-${DATE}.zip   ${WHICH}-budgeting.moneywell
 cd /Users/rick/git/${REPO}/
