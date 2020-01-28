@@ -9,3 +9,7 @@
 HEROKU_AC_BASH_SETUP_PATH=/Users/rick/Library/Caches/heroku/autocomplete/bash_setup && \
   test -f $HEROKU_AC_BASH_SETUP_PATH && \
   source $HEROKU_AC_BASH_SETUP_PATH
+
+
+# vault autocompletions
+complete -C /usr/local/bin/vault vault
