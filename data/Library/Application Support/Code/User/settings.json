@@ -11,7 +11,7 @@
     "editor.renderWhitespace": "all",
     "editor.autoIndent": false,
     "files.insertFinalNewline": true,
-    "window.zoomLevel": 1,
+    "window.zoomLevel": 0,
     "typescript.check.npmIsInstalled": false,
     "workbench.editor.enablePreview": false,
     "workbench.editor.enablePreviewFromQuickOpen": false,
@@ -26,5 +26,6 @@
         "suppressResultsExplorerNotice": false,
         "suppressShowKeyBindingsNotice": true
     },
-    "gitlens.historyExplorer.enabled": true
+    "gitlens.historyExplorer.enabled": true,
+    "[smarty]": {}
 }
