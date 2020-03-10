@@ -2,7 +2,7 @@
 
 # Use `hub` as our git wrapper:
 #   http://defunkt.github.com/hub/
-which hub 2>/dev/null | grep hub >/dev/null && alias git='hub'
+# which hub 2>/dev/null | grep hub >/dev/null && alias git='hub'
 
 # git-related aliases
 alias bankrupt="git stash --all"
