@@ -23,7 +23,7 @@ case "$1" in
   ;;
 esac
 
-remote=`git remote -v | grep "origin.*github.com/[^/]*/[^/]* (push)" | sed 's:^.*github.com/\([^/ ]*/[^/ ]*\).*$:\1:' | sed 's:\.git$::'`
+remote=`git remote -v | grep "origin.*github.com/[^/]*/[^/]*/* (push)" | sed 's:^.*github.com/\([^/ ]*/[^/ ]*\).*$:\1:' | sed 's:\.git$::'`
 
 [[ -z $remote ]] && echo "Not a github repository." && exit 1
 
@@ -35,6 +35,13 @@ if [ "$branch" = "master" ]; then
   echo "Please switch to another branch or specify a branch name via the argument." >&2
   exit 1
 fi
+
+if [ "$branch" = "main" ]; then
+  echo "ERROR: It doesn't make sense to open a pull request from the main branch." >&2
+  echo "Please switch to another branch or specify a branch name via the argument." >&2
+  exit 1
+fi
+
 
 if [ -n "$push" ]; then
   git push -u origin "$branch"
