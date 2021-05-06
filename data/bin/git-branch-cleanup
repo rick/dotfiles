@@ -47,8 +47,8 @@ rescue => detail
   exit(1)
 end
 
-unless current_branch == "master"
-  raise "Must be on master branch to delete unused branches"
+unless (current_branch == "master") || (current_branch == "main")
+  raise "Must be on main or master branch to delete unused branches"
 end
 
 # This is a bit counter-intuitive. We just try to delete everything,
