@@ -35,4 +35,5 @@ alias gsb='git status -sb' # upgrade your git if -sb breaks for you. it's fun.
 alias gt='git-track'
 alias commit='git-open-commit'
 alias ow='git overwritten'
+alias repo='git repo'
 
