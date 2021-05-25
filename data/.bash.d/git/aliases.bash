@@ -35,4 +35,5 @@ alias gt='git-track'
 alias commit='git-open-commit'
 alias ow='git overwritten'
 alias repo='git repo'
+alias pr='git pr'
 
