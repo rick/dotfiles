@@ -4,8 +4,26 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 if ! command -v stow &> /dev/null
 then
-    echo "stow could not be found, please install"
-    exit
+    if ! command -v brew &> /dev/null
+    then
+      echo "stow could not be found, please install. See: https://www.gnu.org/software/stow/"
+      exit 255
+    else
+      echo "Installing stow via homebrew..."
+      brew install stow
+    fi
+fi
+
+if ! command -v age %> /dev/null
+then
+    if ! command -v brew &> /dev/null
+    then
+      echo "age could not be found, please install. https://github.com/FiloSottile/age"
+      exit
+    else
+      echo "Installing age via homebrew..."
+      brew install age
+    fi
 fi
 
 cd "${SCRIPT_DIR}/.."
