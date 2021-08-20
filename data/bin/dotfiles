@@ -1,9 +1,0 @@
-#!/bin/sh
-#
-# dot
-#
-# `dot` handles installation, updates, things like that. Run it periodically
-# to make sure you're on the latest and greatest.
-
-# cd ~/.dotfiles 2>/dev/null && (yes "O" |./script/bootstrap) && cd ~/.private-dotfiles 2>/dev/null && (yes "O" | ./script/bootstrap)
-cd ~/.dotfiles 2>/dev/null && ./script/bootstrap && cd ~/.private-dotfiles 2>/dev/null && ./script/bootstrap
