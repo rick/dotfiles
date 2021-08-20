@@ -22,7 +22,7 @@ mkdir -p tmp private
 TIMESTAMP=$(date +%Y%m%d%H%M%S)
 
 # whose repo are we in?
-GITHUB_USER=$(git remote -v | grep github | head -1 | sed 's,^.*github.com/\([^/]*\).*$,\1,')
+GITHUB_USER="rick"
 
 # create a backup of private dotfiles data
 time tar cvf - private | gzip -9 > "tmp/private-${TIMESTAMP}.tar.gz"
