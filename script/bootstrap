@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -x
-
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 if ! command -v stow &> /dev/null
@@ -9,3 +7,10 @@ then
     echo "stow could not be found, please install"
     exit
 fi
+
+cd "${SCRIPT_DIR}/.."
+
+for PACKAGE in bash gnupg
+do
+  echo stow $PACKAGE
+done
