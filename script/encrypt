@@ -12,11 +12,6 @@ then
   echo "curl could not be found, please install"
 fi
 
-if ! command -v git &> /dev/null
-then
-  echo "git could not be found, please install"
-fi
-
 if [ -z ${GITHUB_USER+x} ]
 then
   echo "GITHUB_USER is unset"
