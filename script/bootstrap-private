@@ -8,12 +8,9 @@ then
     exit
 fi
 
-cd "${SCRIPT_DIR}/.."
+cd "${SCRIPT_DIR}/../private"
 
-for PACKAGE in bash atom docker git gnupg misc perl personal postgres ruby tmux vim vscode
+for PACKAGE in *
 do
-  stow -v $PACKAGE
+  stow -v --target "${HOME}" $PACKAGE
 done
-
-# decrypt and install
-script/decrypt-and-bootstrap

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+if ! command -v age &> /dev/null
+then
+  echo "age could not be found, cannot decrypt/install private dotfiles"
+fi
+
+cd "${SCRIPT_DIR}/.."
+mkdir -p tmp private
+TIMESTAMP=$(date +%Y%m%d%H%M%S)
+
+# decrypt
+age -i ~/.ssh/id_rsa -d private-dotfiles.tar.gz.age > "tmp/private-${TIMESTAMP}.tar.gz"
+
+# clean up current private/ directory
+rm -r private/*
+
+# update
+tar xvfz "tmp/private-${TIMESTAMP}.tar.gz"
+
+rm "tmp/private-${TIMESTAMP}.tar.gz"

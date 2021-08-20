@@ -1,3 +1,0 @@
-#!/bin/bash
-
-curl -H "Content-Type:application/json" -H "Accept:application/json" http://foreman1.central.prd.useast1.3dna.io/api/hosts | jq '.results[].name' > ~/.nb-hosts.json

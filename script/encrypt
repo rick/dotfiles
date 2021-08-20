@@ -1,0 +1,33 @@
+#!/bin/bash
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+if ! command -v age &> /dev/null
+then
+  echo "age could not be found; see: https://github.com/FiloSottile/age"
+fi
+
+if ! command -v curl &> /dev/null
+then
+  echo "curl could not be found, please install"
+fi
+
+if ! command -v git &> /dev/null
+then
+  echo "git could not be found, please install"
+fi
+
+cd "${SCRIPT_DIR}/.."
+mkdir -p tmp private
+TIMESTAMP=$(date +%Y%m%d%H%M%S)
+
+# whose repo are we in?
+GITHUB_USER=$(git remote -v | grep github | head -1 | sed 's,^.*github.com/\([^/]*\).*$,\1,')
+
+# create a backup of private dotfiles data
+time tar cvf - private | gzip -9 > "tmp/private-${TIMESTAMP}.tar.gz"
+
+# get SSH public keys for user and `age` encrypt `private` directory
+curl "https://github.com/${GITHUB_USER}.keys" | age -R - "tmp/private-${TIMESTAMP}.tar.gz" > private-dotfiles.tar.gz.age
+
+rm "tmp/private-${TIMESTAMP}.tar.gz"
