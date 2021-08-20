@@ -12,5 +12,5 @@ cd "${SCRIPT_DIR}/../private"
 
 for PACKAGE in *
 do
-  echo stow -v $PACKAGE
+  stow -v --target "${HOME}" $PACKAGE
 done
