@@ -8,6 +8,7 @@ them securely in a git repository. My dotfiles are based around the Bash shell.
  - Add your SSH public key(s) to your GitHub account.
  - Clone this repo to `~/.dotfiles`.
  - Put private dotfiles in `~/.dotfiles/private`.
+   - Also, consider running `git init` inside the `~/.dotfiles/private` directory if you'd like to use `git` to track changes to the private dotfiles. This would never be separately pushed to a remote, but remote backup is provided via the enclosing dotfiles repository being pushed to GitHub.
  - Set your GitHub username (we pull your public SSH keys from GitHub to encrypt your private dotfiles):
 ```
 export GITHUB_USER="your-username-here"
