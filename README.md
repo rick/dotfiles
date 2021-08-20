@@ -8,6 +8,10 @@ them securely in a git repository. My dotfiles are based around the Bash shell.
  - Add your SSH public key(s) to your GitHub account.
  - Clone this repo to `~/.dotfiles`.
  - Put private dotfiles in `~/.dotfiles/private`.
+ - Set your GitHub username (we pull your public SSH keys from GitHub to encrypt your private dotfiles):
+```
+export GITHUB_USER="your-username-here"
+```
  - Run `script/encrypt` to create an encrypted tarball of your private dotfiles.
  - Push to GitHub.
  - Run `script/bootstrap` to put dotfiles in place, this will prompt for an SSH passphrase to decrypt private dotfiles.
