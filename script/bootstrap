@@ -14,3 +14,6 @@ for PACKAGE in bash atom docker git gnupg misc perl personal postgres ruby tmux 
 do
   stow -v $PACKAGE
 done
+
+# decrypt and install
+script/decrypt-and-bootstrap
