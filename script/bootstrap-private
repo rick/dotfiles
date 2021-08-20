@@ -1,0 +1,16 @@
+#!/bin/bash
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+if ! command -v stow &> /dev/null
+then
+    echo "stow could not be found, please install"
+    exit
+fi
+
+cd "${SCRIPT_DIR}/../private"
+
+for PACKAGE in *
+do
+  echo stow -v $PACKAGE
+done
