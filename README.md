@@ -1,6 +1,6 @@
 
-These are my dotfiles. I use [stow]() to deploy dotfiles into my home
-directory. I use [age]() to encrypt private dotfiles, which allows for storing
+These are my dotfiles. I use [stow](https://www.gnu.org/software/stow/) to deploy dotfiles into my home
+directory. I use [age](https://github.com/FiloSottile/age) to encrypt private dotfiles, which allows for storing
 them securely in a git repository. My dotfiles are based around the Bash shell.
 
 ### using
