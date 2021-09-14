@@ -23,7 +23,7 @@ fi
 age -i ${KEYFILE} -d private-dotfiles.tar.gz.age > "tmp/private-${TIMESTAMP}.tar.gz"
 
 # clean up current private/ directory
-rm -r private/*
+rm -rf private/*
 
 # update
 tar xvfz "tmp/private-${TIMESTAMP}.tar.gz"
