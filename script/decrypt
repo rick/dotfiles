@@ -13,10 +13,10 @@ cd "${SCRIPT_DIR}/.."
 mkdir -p tmp private
 TIMESTAMP=$(date +%Y%m%d%H%M%S)
 
-if [ -f "~/.ssh/id_ed25519" ]; then
-  KEYFILE="~/.ssh/id_ed25519"
+if [ -f "$HOME/.ssh/id_ed25519" ]; then
+  KEYFILE="$HOME/.ssh/id_ed25519"
 else
-  KEYFILE="~/.ssh/id_rsa"
+  KEYFILE="$HOME/.ssh/id_rsa"
 fi
 
 # decrypt
