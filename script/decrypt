@@ -13,8 +13,14 @@ cd "${SCRIPT_DIR}/.."
 mkdir -p tmp private
 TIMESTAMP=$(date +%Y%m%d%H%M%S)
 
+if [ -f "~/.ssh/id_ed25519" ]; then
+  KEYFILE="~/.ssh/id_ed25519"
+else
+  KEYFILE="~/.ssh/id_rsa"
+fi
+
 # decrypt
-age -i ~/.ssh/id_rsa -d private-dotfiles.tar.gz.age > "tmp/private-${TIMESTAMP}.tar.gz"
+age -i ${KEYFILE} -d private-dotfiles.tar.gz.age > "tmp/private-${TIMESTAMP}.tar.gz"
 
 # clean up current private/ directory
 rm -r private/*
