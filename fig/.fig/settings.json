@@ -1,0 +1,7 @@
+{
+  "autocomplete.addStatusToTerminalTitle" : false,
+  "autocomplete.disable" : false,
+  "autocomplete.theme" : "dark",
+  "pty.path" : "\/Users\/play\/.rbenv\/shims:\/Users\/play\/bin:\/usr\/local\/bin:\/usr\/local\/sbin:\/Users\/play\/.bash.d\/bin:\/sbin:\/usr\/local\/bin:\/usr\/bin:\/bin:\/usr\/sbin:\/sbin:\/Library\/TeX\/texbin:\/opt\/puppetlabs\/bin:\/opt\/X11\/bin:\/Library\/Apple\/usr\/bin:\/Users\/play\/.fig\/bin:\/Users\/play\/go\/bin",
+  "userShell" : "\/bin\/bash"
+}

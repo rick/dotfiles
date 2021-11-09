@@ -1,0 +1,2 @@
+
+FIGPATH=$FIGPATH
