@@ -28,7 +28,7 @@ fi
 
 cd "${SCRIPT_DIR}/.."
 
-for PACKAGE in bash atom docker git gnupg misc perl personal postgres ruby tmux vim vscode fig
+for PACKAGE in bash atom docker git gnupg misc perl personal postgres ruby tmux vim vscode 
 do
   stow -v $PACKAGE
 done
