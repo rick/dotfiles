@@ -34,11 +34,11 @@ echo "$WHICH: Using repo $REPO, year $YEAR, date $DATE"
 
 set -x
 
-cd /Users/rick/Downloads
-mkdir -p /Users/rick/git/${REPO}/budgeting/${YEAR}/
-rm -f /Users/rick/git/${REPO}/budgeting/${YEAR}/${WHICH}-budgeting.moneywell-${DATE}.zip
-zip -r -9 /Users/rick/git/${REPO}/budgeting/${YEAR}/${WHICH}-budgeting.moneywell-${DATE}.zip   ${WHICH}-budgeting.moneywell
-cd /Users/rick/git/${REPO}/
+cd /Users/${USER}/Downloads
+mkdir -p /Users/${USER}/git/${REPO}/budgeting/${YEAR}/
+rm -f /Users/${USER}/git/${REPO}/budgeting/${YEAR}/${WHICH}-budgeting.moneywell-${DATE}.zip
+zip -r -9 /Users/${USER}/git/${REPO}/budgeting/${YEAR}/${WHICH}-budgeting.moneywell-${DATE}.zip   ${WHICH}-budgeting.moneywell
+cd /Users/${USER}/git/${REPO}/
 git add budgeting
 git commit -m "Updating budget snapshot for ${DATE}"
 git push
