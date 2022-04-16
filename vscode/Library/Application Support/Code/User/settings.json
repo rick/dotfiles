@@ -28,7 +28,5 @@
     },
     "gitlens.historyExplorer.enabled": true,
     "[smarty]": {},
-    "editor.inlineSuggest.enabled": true,
-    "terminal.integrated.env.osx": {
-    }
+    "editor.inlineSuggest.enabled": true
 }
