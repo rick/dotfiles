@@ -10,7 +10,7 @@ fi
 
 cd "${SCRIPT_DIR}/../private"
 
-for PACKAGE in *
+for PACKAGE in * $(hostname -s)
 do
   stow -v --target "${HOME}" $PACKAGE
 done
