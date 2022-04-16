@@ -2,7 +2,7 @@
 
 # create an upload for a budget snapshot into a git repo
 
-USAGE="Usage:  $0 <house|rick> <yyyymmdd>"
+USAGE="Usage:  $0 <house|rick|river-court> <yyyymmdd>"
 
 WHICH=$1
 DATE=$2
@@ -16,6 +16,8 @@ else
     REPO="5001-indiana"
   elif [[ $WHICH == "rick" ]]; then
     REPO="rick"
+  elif [[ $WHICH == "river-court" ]]; then
+    REPO="2951-river-court"
   else
     echo "invalid category: $WHICH"
     echo $USAGE
