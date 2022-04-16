@@ -10,7 +10,10 @@ fi
 
 cd "${SCRIPT_DIR}/../private"
 
-for PACKAGE in * $(hostname -s)
+for PACKAGE in $(/bin/ls | grep -v hosts) 
 do
   stow -v --target "${HOME}" $PACKAGE
 done
+
+cd hosts
+stow -v --target "${HOME}" $(hostname -s)
