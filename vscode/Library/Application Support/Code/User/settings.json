@@ -9,7 +9,7 @@
     "editor.tabSize": 2,
     "editor.formatOnSave": false,
     "editor.renderWhitespace": "all",
-    "editor.autoIndent": false,
+    "editor.autoIndent": "advanced",
     "files.insertFinalNewline": true,
     "window.zoomLevel": 1,
     "typescript.check.npmIsInstalled": false,
