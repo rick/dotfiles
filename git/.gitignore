@@ -1,3 +1,6 @@
 .DS_Store
 *~
 *.swp
+.envrc
+.direnv/
+.tool-versions
