@@ -26,6 +26,10 @@ then
     fi
 fi
 
+if [[ ! -e ${HOME}/.stow-global-ignore ]]; then
+    touch ${HOME}/.stow-global-ignore
+fi
+
 cd "${SCRIPT_DIR}/.."
 
 for PACKAGE in bash atom direnv docker git gnupg misc perl personal postgres ruby tmux vim vscode 
