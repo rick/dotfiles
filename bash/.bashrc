@@ -33,3 +33,6 @@ done
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# load hooks for asdf + direnv integration
+source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/bashrc"

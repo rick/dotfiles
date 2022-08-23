@@ -12,8 +12,8 @@ cd "${SCRIPT_DIR}/../private"
 
 for PACKAGE in $(/bin/ls | grep -v hosts) 
 do
-  stow -v --target "${HOME}" $PACKAGE
+  stow --no-folding -v --target "${HOME}" $PACKAGE
 done
 
 cd hosts
-stow -v --target "${HOME}" $(hostname -s)
+stow --no-folding -v --target "${HOME}" $(hostname -s)
