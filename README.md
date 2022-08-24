@@ -21,3 +21,7 @@ To bring dotfiles to a new machine:
  - Add that machine's SSH pubkey to your GitHub account.
  - On a machine with dotfiles already checked out, run `script/encrypt` and push changes to GitHub.
  - Pull dotfiles to the new machine and run `script/bootstrap`.
+
+---
+
+ - This has deviated long ago and far away, but was originally part of @holman's dotfiles. Mistakes are mine, dope stylings are probably all his.
