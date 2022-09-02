@@ -1,8 +1,7 @@
-alias reload='. ~/.bashrc'
 alias a='atom .'
-alias shitter='cd ~/git/veralite/ && bin/lasttripped; cd - > /dev/null'
 alias drun='docker run --rm -i -t'
-alias rnl='rename-and-link'
 alias gid='pbpaste | ruby -r base64 -e '"'"'puts Base64.decode64(STDIN.read)'"'"''
 alias localplex='echo "visit http://localhost:32400/web"; ssh -v -L32400:plex:32400 root@plex'
-
+alias reload='. ~/.bashrc'
+alias rnl='rename-and-link'
+alias shitter='cd ~/git/veralite/ && bin/lasttripped; cd - > /dev/null'
