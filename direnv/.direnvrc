@@ -3,12 +3,8 @@ layout_postgres() {
 	export PGHOST="$PGDATA"
 
 	if [[ ! -d "$PGDATA" ]]; then
-		initdb
-		cat >> "$PGDATA/postgresql.conf" <<-EOF
-			listen_addresses = ''
-			unix_socket_directories = '$PGHOST'
-		EOF
-		echo "CREATE DATABASE $USER;" | postgres --single -E postgres
+		echo "This project supports a local postgres database but no database has been initialized."
+                echo "Please run ~/bin/create_local_postgres to set this up."
 	fi
 }
 

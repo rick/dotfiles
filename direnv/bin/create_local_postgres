@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+
+echo "Creating local postgres in ${PGDATA}/postgresql.conf"
+
+if [[ ! -d "$PGDATA" ]]; then
+	initdb
+	cat >> "$PGDATA/postgresql.conf" <<-EOF
+		listen_addresses = ''
+		unix_socket_directories = '$PGHOST'
+	EOF
+	echo "CREATE DATABASE $USER;" | postgres --single -E postgres
+fi
+
+echo "Database created."
+echo "Run: postgres & to start"
