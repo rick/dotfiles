@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# ls a directory, for each subdir, if it is a git checkout, print the subdir name and the git remote of the subdir
+
+ls -l | \
+  grep '^d' | \
+  awk '{print $9}' | \
+  sed -e 's:^\(.*\)$:/bin/echo -n "\1 "; cd \1; git remote -v | grep fetch; cd ..:' | \
+  sh -s 2>&1 | \
+  grep -v fatal: | \
+  sed 's,^\([^ ]*\) origin[    ]*,\1 ,'
