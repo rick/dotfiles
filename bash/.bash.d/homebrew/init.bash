@@ -1,5 +1,5 @@
 if  [ "$(uname -m)" == "arm64" ]; then
-  eval $(/opt/homebrew/bin/brew shellenv)
+  eval $(/usr/local/bin/brew shellenv)
 else
   eval $(brew shellenv)
 fi
