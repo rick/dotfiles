@@ -107,6 +107,7 @@ asdf_add_plugins() {
   if [ -f .tool-versions ]; then
     describe "Add asdf language plugins"
     asdf plugin add python || true
+    asdf plugin add ruby   || true
     asdf plugin add nodejs || true
   fi
 }

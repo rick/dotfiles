@@ -47,3 +47,4 @@ done
 # make sure Brewfile packages are installed
 brew_bundle_install
 asdf_bootstrap
+asdf_add_plugins
