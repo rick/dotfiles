@@ -1,6 +1,10 @@
 #!/bin/bash
 
+set -x
+
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+source ${SCRIPT_DIR}/functions.sh
 
 if ! command -v stow &> /dev/null
 then
@@ -32,10 +36,14 @@ fi
 
 cd "${SCRIPT_DIR}/.."
 
-for PACKAGE in bash atom direnv docker git gnupg misc perl personal postgres ruby tmux vim vscode 
+# decrypt and install private dotfiles
+script/decrypt-and-bootstrap
+
+for PACKAGE in bash atom direnv docker git gnupg misc perl personal postgres ruby tmux vim vscode
 do
   stow --target="$HOME" --no-folding -v $PACKAGE
 done
 
-# decrypt and install
-script/decrypt-and-bootstrap
+# make sure Brewfile packages are installed
+brew_bundle_install
+asdf_bootstrap
