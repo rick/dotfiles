@@ -82,9 +82,9 @@ docker_services_down() {
 
 brew_bundle_install() {
   if [ -f "${HOME}/Brewfile" ]; then
-    brew bundle check || {
+    brew bundle check --file "${HOME}/Brewfile" || {
       describe "Install Homebrew dependencies"
-      brew bundle
+      brew bundle --file ${HOME}/Brewfile
     }
   fi
 }
