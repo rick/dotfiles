@@ -1,4 +1,4 @@
 [[ -r ~/.bashrc ]] && . ~/.bashrc
 
-complete -C /usr/local/bin/terraform terraform
+complete -C /opt/homebrew/bin/terraform terraform
 . $HOME/.asdf/asdf.sh

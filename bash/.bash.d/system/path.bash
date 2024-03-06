@@ -1,4 +1,4 @@
-export PATH="$HOME/bin:/usr/local/bin:/usr/local/sbin:$BASH/bin:/sbin:$PATH:/opt/homebrew/bin:/Users/rick/.local/bin"
-export MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
+export PATH="$HOME/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$BASH/bin:/sbin:$PATH:/Users/rick/.local/bin"
+export MANPATH="/opt/homebrew/man:/opt/homebrew/mysql/man:/opt/homebrew/git/man:$MANPATH"
 
 . $HOME/.asdf/asdf.sh

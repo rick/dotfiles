@@ -29,5 +29,6 @@
     "gitlens.historyExplorer.enabled": true,
     "[smarty]": {},
     "editor.inlineSuggest.enabled": true,
-    "search.useIgnoreFiles": false
+    "search.useIgnoreFiles": false,
+    "security.workspace.trust.untrustedFiles": "open"
 }
