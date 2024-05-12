@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'irb/completion'
-require 'irb/ext/save-history'
+# require 'irb/ext/save-history'
 require 'rubygems'
 require 'pp'
 
@@ -48,4 +48,4 @@ end
 $:.unshift "lib" if File.directory? "lib"
 $:.unshift ".irb.d" if File.directory? ".irb.d"
 
-require "hero"
+# require "hero"
