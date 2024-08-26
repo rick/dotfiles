@@ -14,7 +14,7 @@ cd $SCRIPT_DIR/..
 stow --target="$HOME" --no-folding -v private
 
 cd $SCRIPT_DIR/../public
-for PACKAGE in bash docker git misc personal postgres ruby tmux vim vscode
+for PACKAGE in bash docker git homebrew misc personal postgres ruby tmux vim vscode
 do
   stow --target="$HOME" --no-folding -v $PACKAGE
 done
