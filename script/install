@@ -1,0 +1,14 @@
+#!/bin/bash
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+if ! command -v stow &> /dev/null
+then
+    echo "The command stow is not installed, running bootstrap and creds ..."
+    ${SCRIPT_DIR}/creds
+fi
+
+for PACKAGE in bash atom direnv docker git gnupg misc perl personal postgres ruby tmux vim vscode private
+do
+  stow --target="$HOME" --no-folding -v $PACKAGE
+done
