@@ -1,0 +1,26 @@
+#!/bin/bash
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+brew_bundle_install() {
+  if [ -f "${HOME}/Brewfile" ]; then
+    brew bundle check --file "${HOME}/Brewfile" || {
+      describe "Install Homebrew dependencies"
+      brew bundle --file ${HOME}/Brewfile
+    }
+  fi
+}
+
+echo "Running ${SCRIPT_DIR}/bootstrap ..."
+
+if ! command -v brew &> /dev/null
+then
+    echo "homebrew could not be found, please install. See: https://brew.sh/"
+    exit 255
+fi
+
+brew_bundle_install
+
+if [[ ! -e ${HOME}/.stow-global-ignore ]]; then
+    touch ${HOME}/.stow-global-ignore
+fi
