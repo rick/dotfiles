@@ -2,13 +2,21 @@
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
+echo "Installing dotfiles ..."
+
 if ! command -v stow &> /dev/null
 then
     echo "The command stow is not installed, running bootstrap and creds ..."
     ${SCRIPT_DIR}/creds
 fi
 
-for PACKAGE in bash atom direnv docker git gnupg misc perl personal postgres ruby tmux vim vscode private
+cd $SCRIPT_DIR/..
+stow --target="$HOME" --no-folding -v private
+
+cd $SCRIPT_DIR/../public
+for PACKAGE in bash docker git misc personal postgres ruby tmux vim vscode
 do
   stow --target="$HOME" --no-folding -v $PACKAGE
 done
+
+echo "Done."
