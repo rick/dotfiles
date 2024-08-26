@@ -1,0 +1,73 @@
+[user]
+	name = Rick Bradley
+	email = rick@rickbradley.com
+	signingKey = "op://Private/g43bguz4efaq7f4wio4w4rvuqi/dzogchen-public-key"
+
+[color]
+	branch = auto
+	diff = auto
+	status = auto
+	ui = auto
+
+[alias]
+	stsh = stash --keep-index
+	staash = stash --include-untracked
+	staaash = stash --all
+	standup = !git log --all --author=$USER --since='7am yesterday' --format=%s
+	stat = status
+        st = status
+	co = checkout
+        d = diff
+	di = diff
+	dc = diff --cached
+	ci = commit
+	which = !git branch | grep -i
+
+[github]
+	user = rick
+	token = "op://Private/g43bguz4efaq7f4wio4w4rvuqi/dzogchen-github-token"
+    shelluser = bradley
+
+[credential]
+	helper = osxkeychain
+	helper = /usr/local/share/gcm-core/git-credential-manager
+
+[hub]
+	protocol = https
+
+[core]
+	editor = vim
+	precomposeunicode = false
+	excludesfile = /Users/play/.gitignore
+
+[filter "media"]
+	clean = git-media-clean %f
+	smudge = git-media-smudge %f
+
+[push]
+	default = current
+
+[merge]
+	conflictstyle = diff3
+
+
+[help]
+autocorrect = 1
+
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+
+[gpg]
+	format = ssh
+
+[commit]
+	gpgsign = true
+
+[tag]
+	gpgsign = true
+
+[init]
+	defaultBranch = main
