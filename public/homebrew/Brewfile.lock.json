@@ -3,6 +3,9 @@
     "tap": {
       "homebrew/bundle": {
         "revision": "88ecf2f0f8fe496c2f8994df4d820dd791aea69a"
+      },
+      "heroku/brew": {
+        "revision": "cc5cb0e6c08cee0cf499ac8e6a7360c0d1b4c9e8"
       }
     },
     "brew": {
@@ -137,6 +140,10 @@
             }
           }
         }
+      },
+      "heroku": {
+        "version": "9.1.0",
+        "bottle": false
       }
     },
     "cask": {
