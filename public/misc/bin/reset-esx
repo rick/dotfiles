@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# do a port-forward through backshed: 162.236.21.179
+
+echo "please run:"
+echo "~/bin/esx-tunnel"
+echo "and press return"
+read trash
+
+open https://localhost:8443
+echo "login with ADMIN / ADMIN"
+echo "ensure via Remote Control / Power Control that server is on"
+echo "check via Remote Control / iKVM HTML5 that server is up and running"
+echo "press return when ESX server has been rebooted"
+read trash
+
+echo "checking VM status..."
+ssh esx "vim-cmd vmsvc/getallvms"
+echo "press return to continue"
+read trash
+
+echo "getting power state for VMs..."
+ssh esx "vim-cmd vmsvc/getallvms | grep backshed | awk '{print $1}' | sed 's:^:vim-cmd vmsvc/power.getstate :' | sh -s -x"
+echo "press return to continue"
+read trash
+
+echo "powering on VMs..."
+ssh esx "vim-cmd vmsvc/power.on 13; vim-cmd vmsvc/power.on 5; vim-cmd vmsvc/power.on 7; vim-cmd vmsvc/power.on 8"

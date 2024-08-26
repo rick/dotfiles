@@ -1,0 +1,10 @@
+#!/bin/sh
+
+#
+# Grep across a set of matching files, as located by `find`
+#
+# Example:
+#
+# mgrep '*.c' stdio.h
+
+find . -type f -name "${1}" | xargs grep "${@:2}"

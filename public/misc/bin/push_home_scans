@@ -1,0 +1,5 @@
+#!/bin/sh -x
+
+cd ~/scans/home
+s3cmd --config=${HOME}/.s3cfg-mine sync ./ s3://home.rickbradley.com/scans/
+

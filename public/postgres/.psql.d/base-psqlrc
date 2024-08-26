@@ -1,0 +1,10 @@
+\set QUIET 1
+\set COMP_KEYWORD_CASE preserve-upper
+\set HISTFILE ~/.psql/history- :HOST - :PORT - :DBNAME
+\set HISTCONTROL ignoredups
+\set VERBOSITY verbose
+\pset pager off
+\pset null '(null)'
+\timing
+\unset QUIET
+

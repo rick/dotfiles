@@ -1,0 +1,18 @@
+#!/bin/bash
+# Usage: git repo
+#
+# Open the main github page for the current repo (based on current working directory).
+set -e
+
+unset push
+
+remote=`git remote -v | grep "origin.*git@github.com:[^/]*/[^/]* (push)" | sed 's,^.*git@github.com:\([^/ ]*/[^/ ]*\).*$,\1,' | sed 's:\.git$::'`
+
+if [ -z $remote ]; then
+  echo "not found"
+  remote=`git remote -v | grep "origin.*github.com/[^/]*/[^/]*/* (push)" | sed 's:^.*github.com/\([^/ ]*/[^/ ]*\).*$:\1:' | sed 's:\.git$::'`
+fi
+
+[[ -z $remote ]] && echo "Not a github repository." && exit 1
+
+open "https://github.com/${remote}/"

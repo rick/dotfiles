@@ -1,0 +1,9 @@
+#!/bin/sh
+
+port=${1:-8000}
+dir=`pwd`
+
+echo "Starting web server for local content at: ${dir}"
+echo "Listening on port: ${port}."
+
+ruby -run -ehttpd . -p${port}

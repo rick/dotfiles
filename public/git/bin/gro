@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -e
+
+export branch=$(git branch | (grep main >/dev/null && echo "main" || echo "master")) 
+git stash && git checkout ${branch} && git reset --hard origin/${branch}

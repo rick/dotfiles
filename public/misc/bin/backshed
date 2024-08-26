@@ -1,0 +1,125 @@
+#!/bin/bash
+# IPMI: https://127.0.0.1:8443
+#       Remote Control -> iKVM/HTML5 -> [iKVM/HTML5]
+# esxi: https://127.0.0.1:443
+#       ssh root@10.253.101.200
+#  NAS: https://127.0.0.1:9443/admin/ # nas-EA-1D-7F
+#       ssh root@10.253.1.101
+
+VCONSOLE="10.253.5.200"    # vcenter
+
+ESX_08="10.253.5.208"
+ESX_09="10.253.5.209"
+ESX_10="10.253.5.210"
+
+# WebPowerSwitch on management network (VLAN 5)
+WPS_02="198.51.100.27"       # webpowerswitch ???
+
+# IPMIs on install network
+IPMI_08="198.51.100.23"      # esx08-ipmi
+IPMI_09="198.51.100.24"      # esx09-ipmi
+IPMI_10="198.51.100.25"      # esx10-ipmi
+
+# NAS04="10.253.1.101"       # Legacy Synology
+NAS02="10.253.11.202"        # 8-bay synology
+NAS03="10.253.11.203"        # ReadyNAS Pro
+NAS06="10.253.11.200"        # synology rs1219+ crate01
+
+CONTAINERS="10.253.15.5" # containers node
+
+if [ $# -ne 1 ]; then
+  echo "usage: $0 <internal|external>"
+  exit 1
+fi
+
+case "$1" in
+  "internal" )
+  cp ${HOME}/.ssh/conf.d-available/backshed-internal.conf ${HOME}/.ssh/conf.d/backshed.conf  # update included SSH conf for backshed nodes
+  SOEKRIS="192.168.1.253";;     # internal address for soekris nodes
+  "external" )
+  cp ${HOME}/.ssh/conf.d-available/backshed-external.conf ${HOME}/.ssh/conf.d/backshed.conf  # update included SSH conf for backshed nodes
+  SOEKRIS="162.236.21.179";;    # external CARP address for soekris nodes
+  *) echo >&2 "Invalid option: $@"; exit 1;;
+esac
+
+# more interfaces for port mahyem
+sudo ifconfig lo0 alias 127.0.0.2
+sudo ifconfig lo0 alias 127.0.0.3
+sudo ifconfig lo0 alias 127.0.0.5
+sudo ifconfig lo0 alias 127.0.0.6
+sudo ifconfig lo0 alias 127.0.0.8
+sudo ifconfig lo0 alias 127.0.0.9
+sudo ifconfig lo0 alias 127.0.0.10
+sudo ifconfig lo0 alias 127.0.0.69
+sudo ifconfig lo0 alias 127.0.0.200
+
+
+# 127.0.0.1 is for the webpowerswitches and the IPMI interfaces
+
+# 127.0.0.5 is for the vCenter server
+
+# 127.0.0.6 is for the nas06
+
+# 127.0.0.8 is for the esx08
+# 127.0.0.9 is for the esx09
+# 127.0.0.10 is for the esx10
+# 127.0.0.69 is for the containers node
+
+sudo ssh -A \
+        -L 127.0.0.1:8100:${WPS_02}:80      \
+                                           \
+        -L 127.0.0.1:8108:${IPMI_08}:443   \
+        -L 127.0.0.1:8109:${IPMI_09}:443   \
+        -L 127.0.0.1:8110:${IPMI_10}:443   \
+                                           \
+        -L 127.0.0.2:443:${NAS02}:443      \
+        -L 127.0.0.2:8443:${NAS02}:8443    \
+        -L 127.0.0.2:5000:${NAS02}:5000    \
+        -L 127.0.0.2:5001:${NAS02}:5001    \
+                                           \
+        -L 127.0.0.3:443:${NAS03}:443      \
+        -L 127.0.0.3:8443:${NAS03}:8443    \
+        -L 127.0.0.3:5000:${NAS03}:5000    \
+        -L 127.0.0.3:5001:${NAS03}:5001    \
+                                           \
+        -L 127.0.0.200:443:${VCONSOLE}:443   \
+        -L 127.0.0.200:902:${VCONSOLE}:902   \
+        -L 127.0.0.200:903:${VCONSOLE}:903   \
+        -L 127.0.0.200:5480:${VCONSOLE}:5480 \
+                                           \
+        -L 127.0.0.6:443:${NAS06}:443      \
+        -L 127.0.0.6:8443:${NAS06}:8443    \
+        -L 127.0.0.6:5000:${NAS06}:5000    \
+        -L 127.0.0.6:5001:${NAS06}:5001    \
+                                           \
+        -L 127.0.0.08:443:${ESX_08}:443    \
+        -L 127.0.0.08:902:${ESX_08}:902    \
+        -L 127.0.0.08:903:${ESX_08}:903    \
+        -L 127.0.0.08:5480:${ESX_08}:5480  \
+                                           \
+        -L 127.0.0.09:443:${ESX_09}:443    \
+        -L 127.0.0.09:902:${ESX_09}:902    \
+        -L 127.0.0.09:903:${ESX_09}:903    \
+        -L 127.0.0.09:5480:${ESX_09}:5480  \
+                                           \
+        -L 127.0.0.10:443:${ESX_10}:443    \
+        -L 127.0.0.10:902:${ESX_10}:902    \
+        -L 127.0.0.10:903:${ESX_10}:903    \
+        -L 127.0.0.10:5480:${ESX_10}:5480  \
+					   \
+        -L 127.0.0.69:80:${CONTAINERS}:80  \
+        -L 127.0.0.69:8080:${CONTAINERS}:8080  \
+        -L 127.0.0.69:7878:${CONTAINERS}:7878  \
+        -L 127.0.0.69:8989:${CONTAINERS}:8989 \
+        -L 127.0.0.69:8686:${CONTAINERS}:8686  \
+        -L 127.0.0.69:9696:${CONTAINERS}:9696  \
+        -L 127.0.0.69:9117:${CONTAINERS}:9117  \
+        -L 127.0.0.69:6767:${CONTAINERS}:6767  \
+        -L 127.0.0.69:3579:${CONTAINERS}:3579  \
+        -L 127.0.0.69:6789:${CONTAINERS}:6789  \
+        -L 127.0.0.69:32400:${CONTAINERS}:32400  \
+                                           \
+        -o UserKnownHostsFile=/dev/null    \
+        -o StrictHostKeyChecking=no        \
+                                           \
+        root@${SOEKRIS}

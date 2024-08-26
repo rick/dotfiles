@@ -1,0 +1,26 @@
+#!/bin/bash
+# Usage: git commit [commit-sha]
+#
+# Open the github page for the specified commit, defaulting to the current head ref.
+set -e
+
+unset push
+
+case "$1" in
+-h | --help )
+  sed -ne '/^#/!q;s/.\{1,2\}//;1d;p' < "$0"
+  exit 0
+  ;;
+-* )
+  "$0" --help | head -1 >&2
+  exit 1
+  ;;
+esac
+
+remote=`git remote -v | grep "origin.*github.com/[^/]*/[^/]* (push)" | sed 's:^.*github.com/\([^/ ]*/[^/ ]*\).*$:\1:' | sed 's:\.git$::'`
+
+[[ -z $remote ]] && echo "Not a github repository." && exit 1
+
+commit="${1:-$(git rev-parse HEAD)}"
+
+open "https://github.com/${remote}/commit/${commit}"

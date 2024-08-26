@@ -1,0 +1,59 @@
+#!/bin/bash
+# Usage: git pr [--push] [<branch>]
+#
+# Open the pull request page for <branch> (defaults to current branch).
+# Lands on the new pull request page when no PR exists yet.
+# With `--push` it pushes the branch to the origin remote before continuing.
+set -e
+
+unset push
+
+case "$1" in
+-h | --help )
+  sed -ne '/^#/!q;s/.\{1,2\}//;1d;p' < "$0"
+  exit 0
+  ;;
+--push )
+  push=1
+  shift 1
+  ;;
+-* )
+  "$0" --help | head -1 >&2
+  exit 1
+  ;;
+esac
+
+remote=`git remote -v | grep "origin.*git@github.com:[^/]*/[^/]* (push)" | sed 's,^.*git@github.com:\([^/ ]*/[^/ ]*\).*$,\1,' | sed 's:\.git$::'`
+
+if [ -z $remote ]; then
+  echo "not found"
+  remote=`git remote -v | grep "origin.*github.com/[^/]*/[^/]*/* (push)" | sed 's:^.*github.com/\([^/ ]*/[^/ ]*\).*$:\1:' | sed 's:\.git$::'`
+fi
+
+[[ -z $remote ]] && echo "Not a github repository." && exit 1
+
+branch="${1:-$(git symbolic-ref HEAD)}"
+branch="${branch#refs/heads/}"
+
+if [ "$branch" = "master" ]; then
+  echo "ERROR: It doesn't make sense to open a pull request from the master branch." >&2
+  echo "Please switch to another branch or specify a branch name via the argument." >&2
+  exit 1
+fi
+
+if [ "$branch" = "main" ]; then
+  echo "ERROR: It doesn't make sense to open a pull request from the main branch." >&2
+  echo "Please switch to another branch or specify a branch name via the argument." >&2
+  exit 1
+fi
+
+
+if [ -n "$push" ]; then
+  git push -u origin "$branch"
+elif ! git rev-parse --verify -q "refs/remotes/origin/$branch" >/dev/null; then
+  echo "ERROR: Branch '$branch' does not exist on the origin remote." >&2
+  echo "Use \`--push\` to push the branch to origin first." >&2
+  exit 1
+fi
+
+open "https://github.com/${remote}/pull/${branch//\//%2F}"

@@ -1,0 +1,90 @@
+#!/usr/bin/env ruby
+
+require "find"
+
+# Use fast, approximate SHA fingerprinting to find files which differ over a pair of paths
+#
+# Usage: 
+#
+#   shadiff <dir1> <dir2>
+#
+
+path1 = ARGV.shift
+path2 = ARGV.shift
+
+unless path1 && path2
+  puts "Usage:\n  shadiff <path1> <path2>"
+  exit 1
+end
+
+def compute_sha(file)
+  %x!dd if="#{file}" bs=1024 count=1024 2>/dev/null | shasum!.
+    chomp.
+    sub(%r{\s+-.*}, '')
+end
+
+def collect_shas(dir)
+  result = {}
+  Find.find(dir) do |path|
+    next unless File.file?(path)
+    result[path] = compute_sha(path)
+  end
+  result
+end
+
+def invert(hash)
+  vals = {}
+  hash.each_pair do |k, v|
+    vals[v] ||= []
+    vals[v] << k
+  end
+  vals
+end
+
+def hash_at_keys(hash, keys)
+  result = {}
+  keys.each {|k| result[k] = hash[k] }
+  result
+end
+
+def joint_merge(hash1, hash2)
+  result = {}
+  (hash1.keys + hash2.keys).each do |k|
+    result[k] ||= []
+    result[k] += hash1[k] if hash1[k]
+    result[k] += hash2[k] if hash2[k]
+    result[k] = result[k].flatten.sort.uniq
+  end
+  result
+end
+
+def hash_diff(hash1, hash2)
+  vals1 = invert(hash1)
+  vals2 = invert(hash2)
+
+  keys1 = vals1.keys
+  keys2 = vals2.keys
+
+  [hash_at_keys(vals1, (keys1 - keys2)), 
+   hash_at_keys(vals2, (keys2 - keys1)), 
+   hash_at_keys(joint_merge(vals1, vals2), (keys1 & keys2))]
+end
+
+def output(sigil, hash)
+  hash.each_pair do |k, v|
+    if v
+      v.each do |val|
+        puts "#{sigil} #{val}"
+      end
+    end
+  end
+end
+
+shas1 = collect_shas(path1)
+shas2 = collect_shas(path2)
+
+only1, only2, both = hash_diff(shas1, shas2)
+
+output('-', only1)
+output('+', only2)
+output('|', both)

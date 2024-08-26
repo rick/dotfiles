@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -ex
+
+docker stop $(docker ps -a -q) || true
+docker rm $(docker ps -a -q) || true
+docker system prune -a -f
+docker images -a

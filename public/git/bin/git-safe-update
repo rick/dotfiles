@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+
+require "pathname"
+
+path  = ARGV.shift || raise("\nUsage: #{$0} <path>")
+clean = Pathname.new(path).realpath
+name  = clean.basename.to_s
+
+Dir.chdir clean
+
+# shamelessly ganked out of the guts of boxen.
+if system("which git > /dev/null") && File.directory?(".git") \
+  && system("git fetch -q origin")
+
+  clean  = `git status --porcelain`.empty?
+  current_branch = `git symbolic-ref HEAD`.chomp
+  master = current_branch == "refs/heads/master"
+
+  upstream_changes = `git rev-list --count master..origin/master`.chomp != '0'
+  fast_forwardable = `git rev-list --count origin/master..master`.chomp == '0'
+
+  if current_branch.empty?
+    ref = `git log -1 --pretty=format:%h`
+    raise "Project in #{name} not currently on any branch (ref: #{ref}), won't auto-update!"
+  elsif !master
+    local_branch =  current_branch.split('/')[2..-1].join('/')
+    raise "Project in #{name} is on a non-master branch '#{local_branch}', won't auto-update!"
+  elsif !fast_forwardable
+    raise "Project in #{name} has master branch out of sync, won't auto-update!"
+  elsif !clean
+    raise "Project in #{name} has a dirty tree, won't auto-update!"
+  elsif !upstream_changes
+    warn "Project in #{name} is up-to-date."
+  end
+
+  if clean && master && fast_forwardable && upstream_changes
+    reset   = "(git reset --hard origin/master)"
+    reclean = "(git clean -qdf)"
+
+    unless system "#{reset} && #{reclean}"
+      raise "Auto-update of project in #{name} FAILED."
+    end
+  end
+else
+  raise "Project in #{name} is not a git repository."
+end
+
+exit 0

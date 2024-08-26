@@ -1,0 +1,64 @@
+#!/usr/bin/ruby -w
+
+require 'optparse'
+
+options = {}
+
+option_parser = OptionParser.new do |parser|
+	parser.banner = "Usage: git-branch-cleanup [options]
+
+Deletes already-merged branches from local repository.
+
+This is useful if you have merged branches into master
+and thus no longer need this one.
+
+Will not delete branches that have not been merged.
+"
+
+  parser.on("-h", "--help", "Print program help") do
+      puts parser.help
+      exit(0)
+  end
+end
+
+option_parser.parse!
+
+unless options.empty?
+  # Do something with the options
+end
+
+current_branch = nil
+branches = []
+
+# Figure out the current branch
+#
+begin
+  %x{git branch --merged}.split("\n").each { |line|
+    if line.include?("*")
+      branch = line.sub(/\*\s+/, '')
+      current_branch = branch
+    else
+      branch = line.sub(/\s+/, '')
+      branches << branch
+    end
+  }
+rescue => detail
+  puts "Could not get branch list: #{detail}"
+  exit(1)
+end
+
+unless (current_branch == "master") || (current_branch == "main")
+  raise "Must be on main or master branch to delete unused branches"
+end
+
+# This is a bit counter-intuitive. We just try to delete everything,
+# and rely on the behavior of git to refuse to delete branches that
+# haven't been merged. If we encounter one of those, we just keep moving.
+branches.each do |branch|
+  begin
+    system("git branch -d #{branch}")
+  rescue => detail
+    puts "Could not delete branch #{branch}: #{detail}"
+    exit(2)
+  end
+end

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+
+HOST=${1:-www.github.com}
+
+while true
+do 
+  if $(nmap --host-timeout 10 -p T:80 ${HOST} 2>/dev/null | grep --quiet "Host is up")
+  then 
+    echo -n "+"
+  else 
+    echo -n "_"
+  fi
+	sleep 5
+done
+
