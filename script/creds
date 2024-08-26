@@ -1,0 +1,41 @@
+#!/bin/bash
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+TEMPLATE_DIR="${SCRIPT_DIR}/../templates"  # template input files
+PRIVATE_DIR="${SCRIPT_DIR}/../private"     # private output files (template credentials filled via 1P)
+
+${SCRIPT_DIR}/bootstrap
+
+cd "${SCRIPT_DIR}/../templates"
+
+# create a secure tmpdir for output
+INJECT_TMPDIR=$(mktemp -d -t op-template-inject.XXXXXXXXXX)
+trap "rm -rf ${INJECT_TMPDIR}" EXIT
+
+set -e
+
+echo "Populating template files ..."
+/usr/bin/find . -type f -print | while read template; do
+  echo "Processing ${template} ..."
+  output="${INJECT_TMPDIR}/${template%.template}"
+
+  echo "output: ${output}"
+  echo "template: ${template}"
+
+  # ensure that the enclosing path is created
+  mkdir -p "$(dirname "${output}")"
+
+  # call op to fill in the template
+  op inject -i ${template} -o "${output}"
+done
+echo "Done populating template files."
+
+echo "Moving ${INJECT_TMPDIR} to ${PRIVATE_DIR} ..."
+
+set -x
+rm -rf "${PRIVATE_DIR}"
+/usr/bin/rsync -av "${INJECT_TMPDIR}/" "${PRIVATE_DIR}/"
+set +x
+
+echo "Done."
+exit 0
