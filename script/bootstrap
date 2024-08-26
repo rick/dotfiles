@@ -2,11 +2,19 @@
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
+HOME_BREWFILE="${HOME}/Brewfile"
+LOCAL_BREWFILE="${SCRIPT_DIR}/../public/homebrew/Brewfile"
+
 brew_bundle_install() {
-  if [ -f "${HOME}/Brewfile" ]; then
-    brew bundle check --file "${HOME}/Brewfile" || {
+  if [ -f "${HOME_BREWFILE}" ]; then
+    brew bundle check --file "${HOME_BREWFILE}" || {
       describe "Install Homebrew dependencies"
-      brew bundle --file ${HOME}/Brewfile
+      brew bundle --file "${HOME_BREWFILE}"
+    }
+  elif [ -f "${LOCAL_BREWFILE}" ]; then
+    brew bundle check --file "${LOCAL_BREWFILE}" || {
+      describe "Install Homebrew dependencies"
+      brew bundle --file ${LOCAL_BREWFILE}
     }
   fi
 }
