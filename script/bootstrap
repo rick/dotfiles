@@ -7,15 +7,11 @@ LOCAL_BREWFILE="${SCRIPT_DIR}/../public/homebrew/Brewfile"
 
 brew_bundle_install() {
   if [ -f "${HOME_BREWFILE}" ]; then
-    brew bundle check --file "${HOME_BREWFILE}" || {
-      describe "Install Homebrew dependencies"
-      brew bundle --file "${HOME_BREWFILE}"
-    }
+    echo "Installing homebrew dependencies from ${HOME_BREWFILE}"
+    brew bundle check --file "${HOME_BREWFILE}" 
   elif [ -f "${LOCAL_BREWFILE}" ]; then
-    brew bundle check --file "${LOCAL_BREWFILE}" || {
-      describe "Install Homebrew dependencies"
-      brew bundle --file ${LOCAL_BREWFILE}
-    }
+    echo "Installing initial homebrew dependencies from ${LOCAL_BREWFILE}"
+    brew bundle check --file "${LOCAL_BREWFILE}"
   fi
 }
 
