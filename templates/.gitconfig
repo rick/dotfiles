@@ -26,7 +26,6 @@
 [github]
 	user = rick
 	token = "op://Private/g43bguz4efaq7f4wio4w4rvuqi/dzogchen-github-token"
-    shelluser = bradley
 
 [credential]
 	helper = osxkeychain
