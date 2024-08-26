@@ -32,3 +32,8 @@ script/install
 - `script/bootstrap` will install base things via `brew bundle`
 - `script/creds` will use 1Password CLI to fetch secrets and populate `private/*` from `templates/*`
 - `script/install` will use `stow` to symlink files into your home directory
+
+## Questions
+
+ - "Where is the Brewfile?"
+   - It's in `public/homebrew/Brewfile` and will be symlnked to ~/Brewfile after `script/bootstrap`
