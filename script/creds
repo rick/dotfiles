@@ -9,7 +9,7 @@ ${SCRIPT_DIR}/bootstrap
 cd "${SCRIPT_DIR}/../templates"
 
 # create a secure tmpdir for output
-INJECT_TMPDIR=$(mktemp -d -t op-template-inject.XXXXXXXXXX)
+INJECT_TMPDIR=$(mktemp -d -t op-template-inject)
 trap "rm -rf ${INJECT_TMPDIR}" EXIT
 
 set -e
