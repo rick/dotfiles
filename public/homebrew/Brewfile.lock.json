@@ -230,6 +230,18 @@
         "options": {
           "full_name": "gimp"
         }
+      },
+      "jetbrains-toolbox": {
+        "version": "2.4.2,2.4.2.32922",
+        "options": {
+          "full_name": "jetbrains-toolbox"
+        }
+      },
+      "tuple": {
+        "version": "0.119.6,2024-08-21,38369531d",
+        "options": {
+          "full_name": "tuple"
+        }
       }
     }
   },
