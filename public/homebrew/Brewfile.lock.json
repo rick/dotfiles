@@ -400,6 +400,12 @@
         "options": {
           "full_name": "ngrok"
         }
+      },
+      "textual": {
+        "version": "7.2.3,240606.22,1a4696349",
+        "options": {
+          "full_name": "textual"
+        }
       }
     }
   },
