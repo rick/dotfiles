@@ -1,0 +1,36 @@
+#!/bin/bash
+
+set -x
+
+cd ${HOME}/git/other/ytdl-sub
+
+# if --help is passed, print usage
+if [ "$1" == "--help" ]; then
+  echo "Usage: $0 [rick|nico]  (default: run both)"
+  exit 0
+fi
+
+if [ "$1" == "nico" ]; then
+  PULL_RICK=0
+  PULL_NICO=1
+elif [ "$1" == "rick" ]; then
+  PULL_RICK=1
+  PULL_NICO=0
+else
+  PULL_RICK=1
+  PULL_NICO=1
+fi
+
+if [ $PULL_NICO -eq 1 ]; then
+    echo "pulling Nico videos"
+    docker-compose -f docker-compose.nico.yml down && docker-compose -f docker-compose.nico.yml up -d
+    docker exec -u abc -it ytdl-sub /config/run_cron
+    docker-compose -f docker-compose.nico.yml down
+fi
+
+if [ $PULL_RICK -eq 1 ]; then
+    echo "pulling Rick videos"
+    docker-compose -f docker-compose.yml down && docker-compose -f docker-compose.yml up -d
+    docker exec -u abc -it ytdl-sub-rick /config/run_cron
+    docker-compose -f docker-compose.yml down
+fi
