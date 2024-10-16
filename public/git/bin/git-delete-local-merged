@@ -4,5 +4,5 @@
 # our favorite @tekkub:
 #
 #   https://plus.google.com/115587336092124934674/posts/dXsagsvLakJ
-
-git branch -d `git branch --merged | grep -v '^*' | grep -v 'master' | tr -d '\n'`
+#
+git branch --merged | grep -v '^*' | sed 's,^ *\(.*\) *$,\1,' | grep -v -e '^master$' -e '^main$' | xargs -I {} git branch -d {}
