@@ -1,3 +1,5 @@
+
+
 # shortcut to this dotfiles path is $BASH
 export BASH=$HOME/.bash.d
 
@@ -26,13 +28,7 @@ do
 done
 
 # load every completion after autocomplete loads
-for file in $(find $BASH -type f -o -type l -name 'completion.bash')
-do
-  source $file
-done
-
-# load every completion after autocomplete loads
-for file in $(find $BASH -type f -o -type l -name 'completion.bash')
+for file in $(find $BASH -type f -o -type l -name '*completion.bash')
 do
   source $file
 done
