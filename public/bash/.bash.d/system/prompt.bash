@@ -1,4 +1,3 @@
-# bring in boxen's version of all the fancy git prompt stuff
 source "${HOME}/.bash.d/system/vendor/git-prompt.sh"
 
 # fancy prompt stuff
@@ -49,25 +48,12 @@ previous_exit_color() {
   fi
 }
 
-export GIT_PS1_SHOWUPSTREAM="git verbose"
+export GIT_PS1_SHOWUPSTREAM="auto"
 export GIT_PS1_DESCRIBE_STYLE="branch" # for (master~4) style
 export GIT_PS1_SHOWDIRTYSTATE=true
-# export GIT_PS1_SHOWSTASHSTATE=true
 export GIT_PS1_SHOWUNTRACKEDFILES=true
 export GIT_PS1_SHOWCOLORHINTS=true
-
-if [[ $TERM_PROGRAM == 'iTerm.app' ]]; then
-  # 0 means both tab and window, 1 is tab, 2 is window
-  # see:
-  #   http://www.faqs.org/docs/Linux-mini/Xterm-Title.html#ss4.3
-  #   http://www.mit.edu/afs/athena/system/x11r4/src/mit/clients/xterm/ctlseq2.txt via
-  #   http://ubuntuforums.org/archive/index.php/t-448614.html
-  TAB_NAME='\[\e]1;${PWD/#$HOME/~}\a\]'
-  WINDOW_NAME='\[\e]2;\u@\h:${PWD/#$HOME/~}\a\]'
-else
-  TAB_NAME=''
-  WINDOW_NAME=''
-fi
+# export GIT_PS1_SHOWSTASHSTATE=true
 
 PROMPT_HOST="${TEXT_PURPLE}$(hostname|sed 's|\..*||')${TEXT_RESET}";
 if [[ `whoami` == 'root' ]]; then
@@ -79,7 +65,8 @@ fi
 set_prompt(){
   status_color=$(previous_exit_color $?)
   history -a # append history after each command
-  __git_ps1 "${TAB_NAME}${WINDOW_NAME}${TEXT_CYAN}\d \t${TEXT_RESET} ${PROMPT_HOST} ${TEXT_YELLOW}\w${TEXT_RESET}\n" " ${USER_FLAG} ${status_color}▸${TEXT_RESET} "
+  __git_ps1 "${TEXT_CYAN}\d \t${TEXT_RESET}" "\n${PROMPT_HOST} ${TEXT_YELLOW}\w${TEXT_RESET} ${USER_FLAG} ${status_color}▸${TEXT_RESET} "
 }
+
 
 PROMPT_COMMAND=set_prompt
