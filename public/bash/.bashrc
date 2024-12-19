@@ -3,6 +3,8 @@
 # shortcut to this dotfiles path is $BASH
 export BASH=$HOME/.bash.d
 
+export HISTCONTROL=ignorespace
+
 
 # clean up any symlinks which have gone dangling
 find -L ${BASH} -type l -exec rm -- {} +
