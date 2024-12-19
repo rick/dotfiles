@@ -30,5 +30,6 @@
     "[smarty]": {},
     "editor.inlineSuggest.enabled": true,
     "search.useIgnoreFiles": false,
-    "security.workspace.trust.untrustedFiles": "open"
+    "security.workspace.trust.untrustedFiles": "open",
+    "git.openRepositoryInParentFolders": "always"
 }
