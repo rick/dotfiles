@@ -26,6 +26,11 @@ echo "Populating template files ..."
   mkdir -p "$(dirname "${output}")"
 
   # call op to fill in the template
+  echo
+  echo
+  echo "If this fails... Run 'op signin' and try again:"
+  echo
+  echo
   op inject -i ${template} -o "${output}"
 done
 echo "Done populating template files."
