@@ -1,7 +1,7 @@
 [user]
 	name = Rick Bradley
 	email = rick@rickbradley.com
-	signingKey = "op://Private/g43bguz4efaq7f4wio4w4rvuqi/dzogchen-public-key"
+	signingKey = "op://Private/g43bguz4efaq7f4wio4w4rvuqi/$hostname-public-key"
 
 [color]
 	branch = auto
@@ -25,7 +25,7 @@
 
 [github]
 	user = rick
-	token = "op://Private/g43bguz4efaq7f4wio4w4rvuqi/dzogchen-github-token"
+	token = "op://Private/g43bguz4efaq7f4wio4w4rvuqi/$hostname-github-token"
 
 [credential]
 	helper = osxkeychain

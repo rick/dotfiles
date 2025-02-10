@@ -31,7 +31,7 @@ echo "Populating template files ..."
   echo "If this fails... Run 'op signin' and try again:"
   echo
   echo
-  op inject -i ${template} -o "${output}"
+  hostname=$(/bin/hostname -s) op inject -i ${template} -o "${output}"
 done
 echo "Done populating template files."
 
