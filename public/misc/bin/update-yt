@@ -2,7 +2,8 @@
 
 set -x
 
-cd ${HOME}/git/other/ytdl-sub
+cd /Volumes/S14TB-1/services/ytdl-sub
+
 
 # if --help is passed, print usage
 if [ "$1" == "--help" ]; then
@@ -24,7 +25,7 @@ fi
 if [ $PULL_NICO -eq 1 ]; then
     echo "pulling Nico videos"
     docker-compose -f docker-compose.nico.yml down && docker-compose -f docker-compose.nico.yml up -d
-    docker exec -u abc -it ytdl-sub /config/run_cron
+    docker exec -u abc -it ytdl-sub-nico /config/run_cron
     docker-compose -f docker-compose.nico.yml down
 fi
 
