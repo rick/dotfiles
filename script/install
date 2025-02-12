@@ -2,6 +2,22 @@
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
+# Parse command line arguments
+ADOPT_FLAG=""
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --adopt)
+      ADOPT_FLAG="--adopt"
+      shift
+      ;;
+    *)
+      echo "Unknown option: $1"
+      exit 1
+      ;;
+  esac
+done
+
+
 echo "Installing dotfiles ..."
 
 if ! command -v stow &> /dev/null
@@ -11,12 +27,12 @@ then
 fi
 
 cd $SCRIPT_DIR/..
-stow --target="$HOME" --no-folding -v private
+stow --target="$HOME" --no-folding -v private $ADOPT_FLAG
 
 cd $SCRIPT_DIR/../public
 for PACKAGE in bash cursor docker git homebrew misc personal postgres ruby tmux vim zed
 do
-  stow --target="$HOME" --no-folding -v $PACKAGE
+  stow --target="$HOME" --no-folding -v $PACKAGE $ADOPT_FLAG
 done
 
 echo "Done."
