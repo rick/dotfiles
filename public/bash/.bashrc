@@ -35,4 +35,12 @@ do
   source $file
 done
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
+if [ -f "/opt/homebrew/bin/brew" ]; then
+    BREW_PATH="/opt/homebrew/bin/brew"
+elif [ -f "/usr/local/bin/brew" ]; then
+    BREW_PATH="/usr/local/bin/brew" 
+fi
+
+if [ -n "$BREW_PATH" ]; then
+    eval "$($BREW_PATH shellenv)"
+fi
