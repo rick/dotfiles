@@ -1,5 +1,6 @@
 #!/bin/bash
 
 set -x
+set -eo pipefail
 
-sf org list | grep 'Scratch' | awk '{print $6}' | sed 's,^\(.*\)$,sf org delete scratch --no-prompt -o "\1",' | sh -s -x
+cd /Users/rick/git/work/om/sfdc-dx-sandbox && sf org list | grep 'Scratch' | awk '{print $6}' | sed 's,^\(.*\)$,sf org delete scratch --no-prompt -o "\1",' | sh -s -x
