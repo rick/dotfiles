@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -x
+
+sf org list | grep 'Scratch' | awk '{print $6}' | sed 's,^\(.*\)$,sf org delete scratch --no-prompt -o "\1",' | sh -s -x
