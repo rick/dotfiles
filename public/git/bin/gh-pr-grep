@@ -1,0 +1,88 @@
+#!/bin/bash
+
+#
+# Grep across all open PRs in a repository for a given pattern
+#
+# Usage:
+#   gh-pr-grep --repo owner/repo [grep_options] pattern
+#
+# Example:
+#   gh-pr-grep --repo orderlymeds/backend "update_fields"
+#
+
+
+REPO="owner/repo"  # Default repository
+PATTERN=""
+GREP_ARGS=()
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --repo)
+      REPO="$2"
+      shift 2
+      ;;
+    *)
+      # Collect all remaining arguments for grep
+      GREP_ARGS=("$@")
+      break
+      ;;
+  esac
+done
+
+# Check if we have any grep arguments
+if [ ${#GREP_ARGS[@]} -eq 0 ]; then
+  echo "Error: No pattern specified for grep"
+  echo "Usage: $0 --repo owner/repo [grep_options] pattern"
+  exit 1
+fi
+
+# Store the list of PRs sorted by most recently updated in a temporary file
+# We sort by updatedAt to get the most recently updated PRs first
+TEMP_PR_LIST=$(mktemp)
+gh pr list --repo "$REPO" --state open --json headRefName,number,title,updatedAt \
+  --jq 'sort_by(.updatedAt) | reverse | .[] | "\(.headRefName)|\(.number)|\(.title)|\(.updatedAt)"' > "$TEMP_PR_LIST"
+
+# Get the count of branches to process from the file
+TOTAL_BRANCHES=$(wc -l < "$TEMP_PR_LIST" | tr -d '[:space:]')
+
+# Ensure we have the latest main branch
+git fetch origin main --quiet
+
+# Process each branch with counter
+CURRENT_INDEX=1
+while read -r pr_info; do
+  # Parse PR info
+  BRANCH=$(echo "$pr_info" | cut -d'|' -f1)
+  PR_NUMBER=$(echo "$pr_info" | cut -d'|' -f2)
+  TITLE=$(echo "$pr_info" | cut -d'|' -f3)
+  UPDATED_AT=$(echo "$pr_info" | cut -d'|' -f4)
+
+  # Format the updated time for display (optional)
+  UPDATED_TIME=$(date -d "$UPDATED_AT" "+%Y-%m-%d %H:%M:%S" 2>/dev/null || echo "$UPDATED_AT")
+
+  # Print branch name as we start searching with index/total
+  echo "Searching branch ($CURRENT_INDEX/$TOTAL_BRANCHES): $BRANCH (PR #$PR_NUMBER, updated: $UPDATED_TIME)"
+
+  # Fetch the branch if not present
+  git fetch origin "$BRANCH" --quiet
+
+  # Find the merge-base (common ancestor) of main and the branch
+  MERGE_BASE=$(git merge-base origin/main origin/"$BRANCH")
+
+  # Compare the PR branch against the common ancestor to get only PR-specific changes
+  GREP_RESULTS=$(git diff "$MERGE_BASE" origin/"$BRANCH" | grep -n --color=always "${GREP_ARGS[@]}" 2>/dev/null)
+  GREP_STATUS=$?
+
+  # If grep found matches (exit status 0), display them
+  if [ $GREP_STATUS -eq 0 ]; then
+    echo "  Results:"
+    echo "$GREP_RESULTS" | sed 's/^/    /'
+  fi
+
+  # Increment counter
+  CURRENT_INDEX=$((CURRENT_INDEX+1))
+done < "$TEMP_PR_LIST"
+
+# Clean up temp file
+rm -f "$TEMP_PR_LIST"
