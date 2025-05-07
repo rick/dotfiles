@@ -1,0 +1,131 @@
+#!/bin/bash
+
+# Usage:
+# ./build-all-sfdc-for <branch-name>
+#
+# If no branch name is provided, the script will use the current git branch.
+#
+# If a branch name is provided, the script will use that branch.
+#
+# If the branch name is in Linear format (e.g., rick/at-123-description), it
+# will use the tag (e.g., at-123) as the tag.
+#
+# If the branch name does not follow the linear format, the script will use the
+# first 6 alphanumeric characters (including hyphens and underscores) as the tag,
+# prefixed with 'x-' if the first character is a dash.
+#
+# The full application tag name will be in the format $USER-$BRANCH_TAG-$DATESTAMP, so
+# if you run the script at 10:00am on May 7, 2025, the full application tag name will
+# be rick-at-123-20250507.
+#
+# The script will then create a new scratch org, deploy the code, and create a
+# new Heroku Connect instance.
+#
+# Note that if the ENV variable HEROKU_CONNECT_AUTH_PROMPT is set, it will be
+# run when it is time to authenticate via web browser to Heroku Connect.
+#
+# This could be used to re-display the login credentials in #CREDENTIALS, to
+# make an audible alert, or to send a Slack notification, for example.
+
+# This script is designed to be run from a Mac.
+
+set -e
+set -o pipefail
+
+# Define paths
+export RAILS_PROJECT_PATH="/Users/$USER/git/work/om/orderlymeds"
+export SFDX_PROJECT_PATH="/Users/$USER/git/work/om/sfdc-dx-sandbox"
+
+# Set this to the path of a script to run when it is time to authenticate to Heroku Connect
+export HEROKU_CONNECT_AUTH_PROMPT="/Users/$USER/bin/notify-about-heroku-connect-auth"
+
+# Get branch name from argument or current git branch
+if [ -z "$1" ]; then
+    echo "No branch name provided, using current git branch..."
+    export BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+    echo "Using current branch: $BRANCH_NAME"
+else
+    export BRANCH_NAME="$1"
+fi
+
+# Check if branch follows linear format ($USER/\w+-\d+-.*)
+if [[ "$BRANCH_NAME" =~ ^$USER/([a-zA-Z]+-[0-9]+)- ]]; then
+    BRANCH_TAG="${BASH_REMATCH[1]}"
+    HAVE_FULL_BRANCH=true
+    echo "Extracted branch tag: $BRANCH_TAG from linear branch format"
+else
+    echo "Warning: Branch name does not follow linear format ($USER/\w+-\d+-.*)"
+    # Extract first 6 alphanumeric characters (including hyphens and underscores)
+    BRANCH_TAG=$(echo "$BRANCH_NAME" | grep -o '[a-zA-Z0-9_-]' | head -n 6 | tr -d '\n')
+    echo "Using first 6 alphanumeric characters as tag: $BRANCH_TAG"
+    HAVE_FULL_BRANCH=false
+fi
+
+DATESTAMP=$(date +%Y%m%d)
+export FULL_TAG="${USER}-${BRANCH_TAG}-${DATESTAMP}"
+echo "FULL_TAG: $FULL_TAG"
+
+echo "Starting cleanup and build process for full tag: $FULL_TAG"
+
+# Clean up existing instances
+echo "Cleaning up Heroku Connect instances..."
+time kill-all-heroku-connect
+
+echo "Cleaning up SFDC scratch orgs..."
+time kill-all-scratch-orgs
+
+# Build new scratch org
+echo "Building new SFDC scratch org from $SFDX_PROJECT_PATH..."
+cd "$SFDX_PROJECT_PATH"
+
+if [ "$HAVE_FULL_BRANCH" = true ]; then
+    if ! git rev-parse --verify "$BRANCH_NAME" >/dev/null 2>&1; then
+        echo "Branch $BRANCH_NAME does not exist locally, creating from updated main..."
+        git fetch origin
+        git checkout main
+        git pull origin main
+        git checkout -b "$BRANCH_NAME"
+    else
+        echo "Branch $BRANCH_NAME exists, checking it out..."
+        git checkout "$BRANCH_NAME"
+    fi
+else
+    echo "Using current branch state (no linear branch format detected)..."
+fi
+
+echo "Running './scripts/shell/buildScratch.sh -a $FULL_TAG' in $SFDX_PROJECT_PATH..."
+time ./scripts/shell/buildScratch.sh -a "$FULL_TAG"
+
+echo "Running 'sf org password generate' in $SFDX_PROJECT_PATH..."
+time sf org password generate --target-org "$FULL_TAG"
+
+# Get org credentials
+echo "Retrieving org credentials..."
+export CREDENTIALS=$(sf org display user --target-org "$FULL_TAG" --json | jq '.result | {username, password}' -)
+echo "Org credentials:"
+echo "$CREDENTIALS"
+
+# Create Heroku Connect instance
+echo "Creating Heroku Connect instance from $RAILS_PROJECT_PATH..."
+cd "$RAILS_PROJECT_PATH"
+
+if [ "$HAVE_FULL_BRANCH" = true ]; then
+    if ! git rev-parse --verify "$BRANCH_NAME" >/dev/null 2>&1; then
+        echo "Branch $BRANCH_NAME does not exist locally, creating from updated main..."
+        git fetch origin
+        git checkout main
+        git pull origin main
+        git checkout -b "$BRANCH_NAME"
+    else
+        echo "Branch $BRANCH_NAME exists, checking it out..."
+        git checkout "$BRANCH_NAME"
+    fi
+else
+    echo "Using current branch state (no linear branch format detected)..."
+fi
+
+time bin/create-heroku-connect "$FULL_TAG"
+
+echo "Setup complete for $FULL_TAG"
+
+say "Setup complete for $FULL_TAG"

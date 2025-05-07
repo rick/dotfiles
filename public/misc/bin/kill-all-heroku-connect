@@ -1,6 +1,8 @@
 #!/bin/bash
 
+set -e
 set -x
-set -eo pipefail
 
 cd ~/git/work/om/orderlymeds/ && heroku apps:list --all | grep om-devs@ | grep rick- | awk '{print $1}' | sed 's,^\(.*\)$,./bin/destroy-heroku-connect "\1",' | sh -s -x
+
+exit 0
