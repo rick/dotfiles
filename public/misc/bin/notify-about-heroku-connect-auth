@@ -1,10 +1,5 @@
 #!/bin/bash
 
-set -e
-set -o pipefail
-
 echo "Credentials for Heroku Connect login:"
 echo "$CREDENTIALS"
-
-
-say "time to log in to heroku connect"
+say "time to mash the keyboard and click the buttons lol lol lol"
