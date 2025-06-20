@@ -29,6 +29,7 @@ brew "postgresql@16", link: true
 brew "pup"
 brew "ruby-build"
 brew "rbenv"
+brew "starship"
 brew "stow"
 brew "telnet"
 brew "tfenv"
