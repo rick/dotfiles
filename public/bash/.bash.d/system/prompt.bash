@@ -1,3 +1,13 @@
+if command -v starship >/dev/null 2>&1; then
+    if [ -e ~/.config/starship.toml ]; then
+        eval "$(starship init bash)"
+        return
+    else
+        echo "~/.config/starship.toml not found, ensure that dotfiles are properly installed"
+    fi
+fi
+
+# Starship not available, use our legacy prompt
 source "${HOME}/.bash.d/system/vendor/git-prompt.sh"
 
 # fancy prompt stuff
