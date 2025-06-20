@@ -22,7 +22,7 @@ do
 done
 
 # load everything but the path and completion files
-others=`find $BASH -type f -o -type l -name '*.bash' | grep -v -e completion.bash -e path.bash -e functions.bash`
+others=`find $BASH -type f -o -type l -name '*.bash' | grep -v -e completion.bash -e path.bash -e functions.bash -e prompt.bash`
 
 for file in $others
 do
@@ -38,9 +38,11 @@ done
 if [ -f "/opt/homebrew/bin/brew" ]; then
     BREW_PATH="/opt/homebrew/bin/brew"
 elif [ -f "/usr/local/bin/brew" ]; then
-    BREW_PATH="/usr/local/bin/brew" 
+    BREW_PATH="/usr/local/bin/brew"
 fi
 
 if [ -n "$BREW_PATH" ]; then
     eval "$($BREW_PATH shellenv)"
 fi
+
+source "${HOME}/.bash.d/system/prompt.bash"

@@ -54,7 +54,7 @@ disabled = false
 
 [cmd_duration]
 min_time = 500
-format = '| ⏱️ [$duration](bold red) | '
+format = '| ⏱️  [$duration](bold red) | '
 
 [git_branch]
 symbol = "↦"
