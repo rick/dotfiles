@@ -1,0 +1,26 @@
+# Cursor Rules for OrderlyMeds
+
+## Ruby Environment
+- This project uses rbenv for Ruby version management
+- You'll need to run `rbenv init` in the environment to properly set up Ruby
+- The Ruby version is specified in `.ruby-version` file
+
+## Testing
+- All specs should be run via `bin/rspec` instead of the standard `rspec` command
+- This ensures the correct Ruby environment and gem dependencies are used
+- Example: `bin/rspec spec/lib/ontraport/meta/contact_spec.rb`
+
+## Rails Application
+- This is a Rails application with various integrations (Ontraport, Salesforce, etc.)
+- Follow Rails conventions for file organization and naming
+- Use the existing service objects and models as examples for new code
+
+## Code Style
+- Follow the existing code style and patterns in the codebase
+- Use the `.standard.yml` configuration for Ruby linting
+- Maintain consistency with existing naming conventions and file structure
+
+## Dependencies
+- Check `Gemfile` for existing gems before adding new dependencies
+- Follow the existing pattern for organizing gems by category
+- Use the existing service classes and models as templates for new functionality

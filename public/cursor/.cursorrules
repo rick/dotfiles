@@ -1,0 +1,30 @@
+# Global Cursor Rules
+
+# Check if we're in the OrderlyMeds project
+if [[ "$PWD" == *"orderlymeds"* ]]; then
+  # Load OrderlyMeds-specific rules
+  if [[ -f ~/.cursor-rules/orderlymeds.txt ]]; then
+    cat ~/.cursor-rules/orderlymeds.txt
+  fi
+else
+  # Global rules for other projects can go here
+  cat << 'GLOBAL_EOF'
+# Global Cursor Rules
+
+## General Guidelines
+- Follow the existing code style and patterns in each project
+- Use meaningful variable and function names
+- Write clear, readable code with appropriate comments
+- Follow language-specific conventions and best practices
+
+## Testing
+- Write tests for new functionality
+- Follow the project's existing testing patterns
+- Use descriptive test names that explain the expected behavior
+
+## Documentation
+- Update documentation when adding new features
+- Include examples in documentation where helpful
+- Keep README files up to date with setup instructions
+GLOBAL_EOF
+fi
