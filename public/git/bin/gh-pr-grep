@@ -4,15 +4,40 @@
 # Grep across all open PRs in a repository for a given pattern
 #
 # Usage:
-#   gh-pr-grep --repo owner/repo [grep_options] pattern
+#   gh-pr-grep [--repo owner/repo] [grep_options] pattern
 #
 # Example:
-#   gh-pr-grep --repo orderlymeds/backend "update_fields"
+#   gh-pr-grep "update_fields"                    # Uses current repo
+#   gh-pr-grep --repo orderlymeds/backend "update_fields"  # Specifies repo
 #
 
+# Function to extract owner/repo from git remote
+get_repo_from_remote() {
+    local remote_url
+    remote_url=$(git config --get remote.origin.url 2>/dev/null)
 
-REPO="owner/repo"  # Default repository
-PATTERN=""
+    if [ -z "$remote_url" ]; then
+        echo "Error: No git remote 'origin' found. Please run this from a git repository or specify --repo" >&2
+        return 1
+    fi
+
+    # Handle different URL formats
+    # https://github.com/owner/repo.git
+    # git@github.com:owner/repo.git
+    # https://github.com/owner/repo
+    # git@github.com:owner/repo
+
+    if [[ "$remote_url" =~ ^https://github\.com/([^/]+)/([^/]+) ]]; then
+        echo "${BASH_REMATCH[1]}/${BASH_REMATCH[2]%.git}"
+    elif [[ "$remote_url" =~ ^git@github\.com:([^/]+)/([^/]+) ]]; then
+        echo "${BASH_REMATCH[1]}/${BASH_REMATCH[2]%.git}"
+    else
+        echo "Error: Could not parse repository from remote URL: $remote_url" >&2
+        return 1
+    fi
+}
+
+REPO=""
 GREP_ARGS=()
 
 # Parse command line arguments
@@ -30,10 +55,20 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+# If no repo specified, try to get it from git remote
+if [ -z "$REPO" ]; then
+    REPO=$(get_repo_from_remote)
+    if [ $? -ne 0 ]; then
+        echo "Usage: $0 [--repo owner/repo] [grep_options] pattern"
+        exit 1
+    fi
+    echo "Using repository: $REPO"
+fi
+
 # Check if we have any grep arguments
 if [ ${#GREP_ARGS[@]} -eq 0 ]; then
   echo "Error: No pattern specified for grep"
-  echo "Usage: $0 --repo owner/repo [grep_options] pattern"
+  echo "Usage: $0 [--repo owner/repo] [grep_options] pattern"
   exit 1
 fi
 
