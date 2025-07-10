@@ -75,7 +75,7 @@ fi
 # Store the list of PRs sorted by most recently updated in a temporary file
 # We sort by updatedAt to get the most recently updated PRs first
 TEMP_PR_LIST=$(mktemp)
-gh pr list --repo "$REPO" --state open --json headRefName,number,title,updatedAt \
+gh pr list --limit 500 --repo "$REPO" --state open --json headRefName,number,title,updatedAt \
   --jq 'sort_by(.updatedAt) | reverse | .[] | "\(.headRefName)|\(.number)|\(.title)|\(.updatedAt)"' > "$TEMP_PR_LIST"
 
 # Get the count of branches to process from the file
