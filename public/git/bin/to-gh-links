@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# convert a grep -n -H ... list of matches to a list of github links to files and lines
+
+# Function to extract owner/repo from git remote
+get_repo_from_remote() {
+    local remote_url
+    remote_url=$(git config --get remote.origin.url 2>/dev/null)
+
+    if [ -z "$remote_url" ]; then
+        echo "Error: No git remote 'origin' found. Please run this from a git repository or specify --repo" >&2
+        return 1
+    fi
+
+    if [[ "$remote_url" =~ ^https://github\.com/([^/]+)/([^/]+) ]]; then
+        echo "${BASH_REMATCH[1]}/${BASH_REMATCH[2]%.git}"
+    elif [[ "$remote_url" =~ ^git@github\.com:([^/]+)/([^/]+) ]]; then
+        echo "${BASH_REMATCH[1]}/${BASH_REMATCH[2]%.git}"
+    else
+        echo "Error: Could not parse repository from remote URL: $remote_url" >&2
+        return 1
+    fi
+}
+
+REPO=""
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --repo)
+      REPO="$2"
+      shift 2
+      ;;
+    *)
+      # Ignore other arguments (for compatibility with piped input)
+      shift
+      ;;
+  esac
+ done
+
+# If no repo specified, try to get it from git remote
+if [ -z "$REPO" ]; then
+    REPO=$(get_repo_from_remote)
+    if [ $? -ne 0 ]; then
+        echo "Usage: $0 [--repo owner/repo]" >&2
+        exit 1
+    fi
+fi
+
+# Read from stdin and convert to GitHub links
+sed -E "s,^([^:]+):([^:]+):.*$,https://github.com/${REPO}/blob/main/\1#L\2,"
