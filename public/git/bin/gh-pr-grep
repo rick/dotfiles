@@ -106,7 +106,7 @@ while read -r pr_info; do
   MERGE_BASE=$(git merge-base origin/main origin/"$BRANCH")
 
   # Compare the PR branch against the common ancestor to get only PR-specific changes
-  GREP_RESULTS=$(git diff "$MERGE_BASE" origin/"$BRANCH" | grep -n --color=always "${GREP_ARGS[@]}" 2>/dev/null)
+  GREP_RESULTS=$(git diff "$MERGE_BASE" origin/"$BRANCH" -- . ':(exclude,glob)config/credentials/**' | grep -n --color=always "${GREP_ARGS[@]}" 2>/dev/null)
   GREP_STATUS=$?
 
   # If grep found matches (exit status 0), display them
