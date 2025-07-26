@@ -23,6 +23,7 @@ brew "yt-dlp"
 brew "mpv"
 brew "node"
 brew "nuget"
+brew "peak/tap/s5cmd"
 brew "poppler"
 brew "postgresql@15"
 brew "postgresql@16", link: true
