@@ -7,7 +7,6 @@ _Files with dots?_
  - Track dotfiles with git
  - Use [GNU Stow](https://www.gnu.org/software/stow/) to manage installation (via symlinks)
  - Use [Homebrew](https://brew.sh/) to install some base software
- - Use [flox](https://flox.dev) to manage languages and tools
  - Use 1Password CLI integration + templates for secrets
    - (See: https://developer.1password.com/docs/cli/secrets-config-files/)
    - No secrets in git repos
