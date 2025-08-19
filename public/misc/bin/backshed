@@ -28,17 +28,19 @@ NAS06="10.253.11.200"        # synology rs1219+ crate01
 CONTAINERS="10.253.15.5" # containers node
 
 if [ $# -ne 1 ]; then
-  echo "usage: $0 <internal|external>"
-  exit 1
+  WHICH="external"
+else
+  WHICH=$1
 fi
 
-case "$1" in
+
+case "$WHICH" in
   "internal" )
   cp ${HOME}/.ssh/conf.d-available/backshed-internal.conf ${HOME}/.ssh/conf.d/backshed.conf  # update included SSH conf for backshed nodes
   SOEKRIS="192.168.1.253";;     # internal address for soekris nodes
   "external" )
   cp ${HOME}/.ssh/conf.d-available/backshed-external.conf ${HOME}/.ssh/conf.d/backshed.conf  # update included SSH conf for backshed nodes
-  SOEKRIS="162.236.21.179";;    # external CARP address for soekris nodes
+  SOEKRIS="67.249.164.243";;    # external CARP address for soekris nodes
   *) echo >&2 "Invalid option: $@"; exit 1;;
 esac
 
@@ -122,4 +124,4 @@ sudo ssh -A \
         -o UserKnownHostsFile=/dev/null    \
         -o StrictHostKeyChecking=no        \
                                            \
-        root@${SOEKRIS}
+        -p 2222 root@${SOEKRIS}
