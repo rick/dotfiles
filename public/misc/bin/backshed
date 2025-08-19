@@ -25,24 +25,8 @@ NAS02="10.253.11.202"        # 8-bay synology
 NAS03="10.253.11.203"        # ReadyNAS Pro
 NAS06="10.253.11.200"        # synology rs1219+ crate01
 
+SOEKRIS="67.249.164.243";;    # external CARP address for soekris nodes
 CONTAINERS="10.253.15.5" # containers node
-
-if [ $# -ne 1 ]; then
-  WHICH="external"
-else
-  WHICH=$1
-fi
-
-
-case "$WHICH" in
-  "internal" )
-  cp ${HOME}/.ssh/conf.d-available/backshed-internal.conf ${HOME}/.ssh/conf.d/backshed.conf  # update included SSH conf for backshed nodes
-  SOEKRIS="192.168.1.253";;     # internal address for soekris nodes
-  "external" )
-  cp ${HOME}/.ssh/conf.d-available/backshed-external.conf ${HOME}/.ssh/conf.d/backshed.conf  # update included SSH conf for backshed nodes
-  SOEKRIS="67.249.164.243";;    # external CARP address for soekris nodes
-  *) echo >&2 "Invalid option: $@"; exit 1;;
-esac
 
 # more interfaces for port mahyem
 sudo ifconfig lo0 alias 127.0.0.2
