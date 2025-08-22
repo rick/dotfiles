@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+set -x
+
+BACKUP_ROOT="/Volumes/S14TB-1/backups/containers"
+TIMESTAMP=$(date +"%Y%m%d%H%M%S")
+BACKUP_PATH="${BACKUP_ROOT}/${TIMESTAMP}"
+
+mkdir -p "${BACKUP_PATH}"
+
+time rsync -av --progress root@containers:/opt/config "${BACKUP_PATH}"
