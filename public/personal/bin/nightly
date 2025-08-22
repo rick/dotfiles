@@ -10,3 +10,5 @@ BACKUP_PATH="${BACKUP_ROOT}/${TIMESTAMP}"
 mkdir -p "${BACKUP_PATH}"
 
 time rsync -av --progress root@containers:/opt/config "${BACKUP_PATH}"
+
+du -sh "${BACKUP_ROOT}"
