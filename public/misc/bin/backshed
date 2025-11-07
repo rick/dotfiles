@@ -109,4 +109,4 @@ sudo ssh -A \
         -o UserKnownHostsFile=/dev/null    \
         -o StrictHostKeyChecking=no        \
                                            \
-        -p 2222 root@${SOEKRIS}
+        -p 22 root@${SOEKRIS}
