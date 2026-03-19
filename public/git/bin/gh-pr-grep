@@ -7,8 +7,8 @@
 #   gh-pr-grep [--repo owner/repo] [grep_options] pattern
 #
 # Example:
-#   gh-pr-grep "update_fields"                    # Uses current repo
-#   gh-pr-grep --repo orderlymeds/backend "update_fields"  # Specifies repo
+#   gh-pr-grep "update_fields"                           # Uses current repo
+#   gh-pr-grep --repo username/reponame "update_fields"  # Specifies repo
 #
 
 # Function to extract owner/repo from git remote
