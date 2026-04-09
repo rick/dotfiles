@@ -35,7 +35,9 @@ do
   source $file
 done
 
-if [ -f "/opt/homebrew/bin/brew" ]; then
+if [ -f "/opt/workbrew/bin/brew" ]; then
+    BREW_PATH="/opt/workbrew/bin/brew"
+elif [ -f "/opt/homebrew/bin/brew" ]; then
     BREW_PATH="/opt/homebrew/bin/brew"
 elif [ -f "/usr/local/bin/brew" ]; then
     BREW_PATH="/usr/local/bin/brew"
