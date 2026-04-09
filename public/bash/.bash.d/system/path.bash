@@ -1,1 +1,1 @@
-export PATH="$HOME/bin:/sbin:$PATH"
+export PATH="/opt/homebrew/opt/ruby/bin:$HOME/bin:/sbin:$PATH"
