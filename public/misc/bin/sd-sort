@@ -1,0 +1,13 @@
+#!/bin/bash
+
+DEVICE=$(mount | grep -e Nico -e Rick)
+
+if [[ -z "$DEVICE" ]]; then
+  echo "Error: No mounted device found with 'Nico' or 'Rick' in the name."
+  exit 1
+fi
+
+DEVICE=$(echo "$DEVICE" | awk '{print $1}')
+
+diskutil unmount "$DEVICE"
+fatsort "$DEVICE"
